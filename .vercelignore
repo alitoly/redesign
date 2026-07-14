@@ -1,0 +1,8 @@
+.openai/
+.sites/
+.source-references/
+.vinext/
+.wrangler/
+dist/
+dev*.log
+*.zip
