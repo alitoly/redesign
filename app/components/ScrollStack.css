@@ -1,0 +1,85 @@
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  height: clamp(460px, 66vh, 620px);
+  margin-top: 54px;
+  overflow-y: auto;
+  overflow-x: visible;
+  overscroll-behavior: contain;
+  border-radius: 22px;
+  background: var(--green-950);
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-stack-inner {
+  padding: 8vh clamp(20px, 5vw, 64px) 30vh;
+  min-height: 100%;
+}
+
+.scroll-stack-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(20px, 4vw, 46px);
+  min-height: 15rem;
+  width: 100%;
+  padding: clamp(28px, 4vw, 48px);
+  color: white;
+  background: linear-gradient(155deg, var(--green-900), var(--green-950));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  box-sizing: border-box;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.28);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.scroll-stack-card__step {
+  flex-shrink: 0;
+  font: 700 clamp(40px, 5vw, 56px)/1 "Noto Kufi Arabic", sans-serif;
+  color: var(--gold);
+}
+
+.scroll-stack-card__body h3 {
+  margin: 0 0 14px;
+  font-family: "Noto Kufi Arabic", sans-serif;
+  font-size: clamp(19px, 2vw, 24px);
+}
+
+.scroll-stack-card__body p {
+  margin: 0;
+  max-width: 60ch;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  line-height: 2;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+}
+
+@media (max-width: 760px) {
+  .scroll-stack-scroller {
+    height: clamp(420px, 72vh, 560px);
+    border-radius: 16px;
+  }
+  .scroll-stack-card {
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-stack-scroller {
+    height: auto;
+    overflow: visible;
+  }
+  .scroll-stack-inner {
+    padding: 0;
+  }
+  .scroll-stack-card {
+    margin-bottom: 18px !important;
+  }
+}
