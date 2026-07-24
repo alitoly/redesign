@@ -27,7 +27,7 @@
 }
 
 .magic-bento-card:hover {
-  box-shadow: 0 20px 46px rgba(7, 59, 42, 0.35);
+  box-shadow: 0 20px 46px rgba(7, 27, 59, 0.35);
 }
 
 .magic-bento-card__header {
@@ -40,7 +40,7 @@
   width: 46px;
   height: 46px;
   color: var(--gold);
-  background: rgba(195, 155, 89, 0.14);
+  background: rgba(200, 166, 78, 0.14);
   border-radius: 50%;
 }
 
@@ -57,7 +57,7 @@
 
 .magic-bento-card__title {
   margin: 0;
-  font-family: "Noto Kufi Arabic", sans-serif;
+  font-family: var(--font-display);
   font-size: 19px;
   font-weight: 600;
 }
@@ -137,8 +137,8 @@
   padding: 1.5px;
   background: radial-gradient(
     var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-    rgba(195, 155, 89, calc(var(--glow-intensity) * 0.9)) 0%,
-    rgba(195, 155, 89, calc(var(--glow-intensity) * 0.4)) 30%,
+    rgba(200, 166, 78, calc(var(--glow-intensity) * 0.9)) 0%,
+    rgba(200, 166, 78, calc(var(--glow-intensity) * 0.4)) 30%,
     transparent 60%
   );
   border-radius: inherit;
@@ -159,7 +159,7 @@
   content: "";
   position: absolute;
   inset: -2px;
-  background: rgba(195, 155, 89, 0.2);
+  background: rgba(200, 166, 78, 0.2);
   border-radius: 50%;
   z-index: -1;
 }

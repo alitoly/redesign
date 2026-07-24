@@ -380,7 +380,7 @@ export default function MagicBento({
       >
         {items.map((item) => {
           const baseClassName = `magic-bento-card${enableBorderGlow ? " magic-bento-card--border-glow" : ""}`;
-          const cardStyle: React.CSSProperties = { backgroundColor: "var(--green-950)" };
+          const cardStyle: React.CSSProperties = { backgroundColor: "var(--navy-950)" };
 
           const content = (
             <>

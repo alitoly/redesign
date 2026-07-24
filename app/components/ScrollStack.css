@@ -1,15 +1,21 @@
 .scroll-stack-scroller {
   position: relative;
   width: 100%;
+  /* Matches the measure of every other grid on the page (1140px) so the cards
+     stop stretching to a 1600px unreadable line length. */
+  max-width: 1140px;
   height: clamp(460px, 66vh, 620px);
-  margin-top: 54px;
+  margin: 54px auto 0;
   overflow-y: auto;
   overflow-x: visible;
   overscroll-behavior: contain;
-  border-radius: 22px;
-  background: var(--green-950);
+  background: transparent;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+
+/* The internal scrollbar is an artifact of the stacking mechanism, not a control. */
+.scroll-stack-scroller::-webkit-scrollbar { display: none; }
 
 .scroll-stack-inner {
   padding: 8vh clamp(20px, 5vw, 64px) 30vh;
@@ -20,38 +26,63 @@
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: clamp(20px, 4vw, 46px);
+  gap: clamp(24px, 4vw, 56px);
   min-height: 15rem;
   width: 100%;
-  padding: clamp(28px, 4vw, 48px);
+  padding: clamp(30px, 4vw, 52px) clamp(28px, 4vw, 56px);
   color: white;
-  background: linear-gradient(155deg, var(--green-900), var(--green-950));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 22px;
+  background: linear-gradient(155deg, var(--navy-900), var(--navy-950));
+  border-radius: 18px;
   box-sizing: border-box;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.28);
+  /* Shadow tinted to the band's own hue rather than pure black. */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 26px 54px rgba(7, 27, 59, .2);
   will-change: transform;
   backface-visibility: hidden;
 }
 
+/* Text leads at the reading edge (right, in RTL); the numeral is pushed to the far
+   edge as a counterweight, which turns the old dead space into deliberate space. */
+.scroll-stack-card__body { order: 1; flex: 1; }
+.scroll-stack-card__step { order: 2; margin-inline-start: auto; }
+
+/* Small and gold, so the step title carries the hierarchy instead of the number. */
 .scroll-stack-card__step {
   flex-shrink: 0;
-  font: 700 clamp(40px, 5vw, 56px)/1 "Noto Kufi Arabic", sans-serif;
+  padding-top: 6px;
+  font: 600 clamp(13px, 1.1vw, 15px)/1 var(--font-display);
+  letter-spacing: .2em;
   color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.scroll-stack-card__step::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 2px;
+  margin-top: 14px;
+  margin-inline-start: auto;
+  background: var(--gold);
+  opacity: .55;
 }
 
 .scroll-stack-card__body h3 {
-  margin: 0 0 14px;
-  font-family: "Noto Kufi Arabic", sans-serif;
-  font-size: clamp(19px, 2vw, 24px);
+  margin: 0 0 16px;
+  max-width: 22ch;
+  font-family: var(--font-display);
+  font-size: clamp(21px, 2.3vw, 31px);
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: balance;
 }
 
 .scroll-stack-card__body p {
   margin: 0;
-  max-width: 60ch;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 15px;
+  max-width: 56ch;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15.5px;
   line-height: 2;
+  text-wrap: pretty;
 }
 
 .scroll-stack-end {
@@ -62,13 +93,19 @@
 @media (max-width: 760px) {
   .scroll-stack-scroller {
     height: clamp(420px, 72vh, 560px);
-    border-radius: 16px;
+    margin-top: 40px;
   }
   .scroll-stack-card {
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
     min-height: 0;
+    border-radius: 14px;
   }
+  /* Stacked: the numeral leads again, since there is no far edge to anchor it to. */
+  .scroll-stack-card__step { order: 0; margin-inline-start: 0; padding-top: 0; }
+  .scroll-stack-card__step::after { margin-inline-start: 0; }
+  .scroll-stack-card__body h3 { max-width: none; font-size: 20px; }
+  .scroll-stack-card__body p { font-size: 14.5px; line-height: 1.95; }
 }
 
 @media (prefers-reduced-motion: reduce) {

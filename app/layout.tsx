@@ -1,6 +1,27 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
+import { IBM_Plex_Sans_Arabic, Tajawal } from "next/font/google";
 import "./globals.css";
+
+const display = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display-loaded",
+  display: "swap",
+});
+
+const body = Tajawal({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-body-loaded",
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: "#071B3B",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
@@ -32,5 +53,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ar" dir="rtl"><body>{children}</body></html>;
+  return (
+    <html lang="ar" dir="rtl" className={`${display.variable} ${body.variable}`}>
+      <body>{children}</body>
+    </html>
+  );
 }

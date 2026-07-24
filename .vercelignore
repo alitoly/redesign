@@ -6,3 +6,8 @@
 dist/
 dev*.log
 *.zip
+
+# Original 6000x4000 photographs (4-8 MB each). Only the generated
+# derivatives in public/images/opt/ are ever served — see scripts/optimize-images.mjs.
+public/images/*.JPG
+public/images/*.jpg
