@@ -5,6 +5,9 @@ import test from "node:test";
 test("produces a native Next.js application build", async () => {
   await access(new URL("../.next/BUILD_ID", import.meta.url));
   await access(new URL("../.next/server/app/page.js", import.meta.url));
+  await access(new URL("../.next/server/app/about/page.js", import.meta.url));
+  await access(new URL("../.next/server/app/join/page.js", import.meta.url));
+  await access(new URL("../.next/server/app/library/page.js", import.meta.url));
 
   const packageJson = JSON.parse(
     await readFile(new URL("../package.json", import.meta.url), "utf8"),
@@ -20,15 +23,20 @@ test("produces a native Next.js application build", async () => {
 });
 
 test("keeps the Arabic content, search metadata, and mobile behavior intact", async () => {
-  const [page, layout, css] = await Promise.all([
+  // The header, footer, JSON-LD and the reveal observer moved out of the homepage when
+  // it was split into /, /about and /join; each assertion follows its content.
+  const [page, layout, css, footer, reveal] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/SiteFooter.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/RevealObserver.tsx", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /المنصة الوطنية للقيادات النسائية العمانية/);
-  assert.match(page, /IntersectionObserver/);
-  assert.match(page, /application\/ld\+json/);
+  assert.match(footer, /المنصة الوطنية للقيادات النسائية العمانية/);
+  assert.match(layout, /المنصة الوطنية للقيادات النسائية العمانية/);
+  assert.match(reveal, /IntersectionObserver/);
+  assert.match(layout, /application\/ld\+json/);
   assert.match(layout, /generateMetadata/);
   assert.match(layout, /"منصة قيادات"/);
   assert.match(layout, /"\/og\.png"/);

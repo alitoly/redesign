@@ -1,0 +1,96 @@
+/* Tab row seated on the panel: the tabs' bottom edge merges into the panel surface, so
+   the pair reads as one object rather than a control floating above a card. */
+.tab-deck {
+  --tab-tone: var(--navy-800);
+  max-width: 1140px;
+  margin: 52px auto 0;
+}
+
+.tab-deck__rail { position: relative; }
+
+.tab-deck__list {
+  display: flex;
+  gap: 6px;
+  padding-bottom: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.tab-deck__list::-webkit-scrollbar { display: none; }
+
+.tab-deck__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  min-height: 48px;
+  padding: 12px 20px;
+  color: var(--muted);
+  background: color-mix(in oklab, var(--mist) 70%, var(--paper));
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  scroll-snap-align: end;
+  cursor: pointer;
+  transition: color .22s ease, background .22s ease, border-color .22s ease;
+}
+.tab-deck__tab:hover { color: var(--navy-950); background: var(--paper); }
+
+.tab-deck__tab[aria-selected="true"] {
+  color: white;
+  background: var(--tab-tone);
+  border-color: transparent;
+}
+
+.tab-deck__tab-icon { display: grid; place-items: center; width: 20px; height: 20px; }
+.tab-deck__tab-icon svg { width: 18px; height: 18px; }
+
+.tab-deck__panel {
+  /* Enough that switching between a four-chip and a six-chip group does not shift the
+     page, but not so much that the shortest group sits in a field of white. */
+  min-height: 148px;
+  padding: clamp(26px, 3vw, 44px);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0 14px 14px 14px;
+  animation: tab-panel-in .38s cubic-bezier(.22, .61, .36, 1) both;
+}
+.tab-deck__panel:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+@keyframes tab-panel-in {
+  from { opacity: 0; translate: 0 8px; }
+  to { opacity: 1; translate: none; }
+}
+
+/* Chips step up a size inside a panel: six of them at list scale float in the middle of
+   a 1140px surface. */
+.tab-deck__panel .chip-list { gap: 12px; }
+.tab-deck__panel .chip { padding-block: 10px; padding-inline: 12px 19px; font-size: 15px; }
+.tab-deck__panel .chip__icon { width: 30px; height: 30px; }
+.tab-deck__panel .chip__icon svg { width: 24px; height: 24px; }
+
+/* Scrolling tab strip on phones: the fade tells the reader there are more tabs to the
+   left without spending a row on a scrollbar. */
+@media (max-width: 700px) {
+  .tab-deck { margin-top: 38px; }
+  .tab-deck__rail::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 34px;
+    background: linear-gradient(270deg, transparent, var(--mist));
+    pointer-events: none;
+  }
+  .tab-deck__list { padding-left: 20px; }
+  .tab-deck__tab { padding: 11px 15px; font-size: 13px; }
+  .tab-deck__panel { padding: 24px 20px; min-height: 0; border-radius: 0 12px 12px 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-deck__panel { animation: none; }
+}

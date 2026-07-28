@@ -1,0 +1,119 @@
+/* The registration flow as an editorial ladder. The sequence is the information here —
+   a visitor needs to know that review precedes activation — so the numerals are the
+   structure, not decoration. */
+.step-ladder {
+  --num-col: clamp(64px, 8vw, 112px);
+
+  position: relative;
+  max-width: 1180px;
+  margin: 58px auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The spine draws itself downward as the section arrives. */
+.step-ladder::before {
+  content: "";
+  position: absolute;
+  inset-block: 18px 24px;
+  inset-inline-start: calc(var(--num-col) - 1px);
+  width: 1px;
+  background: var(--line);
+  transform-origin: top;
+  scale: 1 0;
+  transition: scale 1.1s cubic-bezier(.22, .61, .36, 1);
+}
+.step-ladder.is-visible::before { scale: 1 1; }
+
+.step-ladder__step {
+  display: grid;
+  grid-template-columns: var(--num-col) minmax(0, 1fr) clamp(170px, 21vw, 280px);
+  align-items: start;
+  column-gap: clamp(20px, 3vw, 44px);
+  padding-block: clamp(30px, 4vw, 52px);
+}
+.step-ladder__step + .step-ladder__step { border-top: 1px solid color-mix(in oklab, var(--line) 55%, transparent); }
+
+.step-ladder__num {
+  position: relative;
+  display: block;
+  padding-inline-end: 14px;
+  /* --gold is 2.3:1 on paper; at this size the numeral is large text and owes 3:1.
+     --tone-gold is the ramp the project already darkened for exactly this. */
+  color: var(--tone-gold);
+  font-family: var(--font-display);
+  font-size: clamp(46px, 6.4vw, 88px);
+  font-weight: 600;
+  line-height: .9;
+  letter-spacing: -0.04em;
+  text-align: end;
+}
+/* Tick where the step meets the spine. */
+.step-ladder__num::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: -1px;
+  top: .34em;
+  width: 13px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.step-ladder__text { padding-top: .18em; }
+.step-ladder__text h3 {
+  margin: 0;
+  color: var(--navy-950);
+  font-size: clamp(19px, 2vw, 27px);
+  font-weight: 600;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+.step-ladder__text p {
+  max-width: 62ch;
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: clamp(14px, 1.25vw, 17px);
+  line-height: 2.05;
+}
+
+/* Supporting detail carried over from the platform's earlier copy — set below the step
+   body so it reads as a footnote to the client's own wording, not a competing sentence. */
+.step-ladder__note {
+  max-width: 58ch;
+  margin: 14px 0 0;
+  padding-inline-start: 14px;
+  color: var(--muted);
+  font-size: clamp(13px, 1.05vw, 14px);
+  line-height: 1.95;
+  border-inline-start: 1px solid var(--line);
+}
+
+.step-ladder__photo {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.step-ladder__photo img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .step-ladder {
+    --num-col: clamp(48px, 15vw, 68px);
+    margin-top: 40px;
+  }
+  .step-ladder__step { grid-template-columns: var(--num-col) minmax(0, 1fr); column-gap: 16px; padding-block: 28px; }
+  .step-ladder__num { font-size: clamp(34px, 10vw, 46px); padding-inline-end: 10px; }
+  .step-ladder__num::after { width: 9px; }
+  .step-ladder__text h3 { font-size: 18px; }
+  .step-ladder__text p { margin-top: 12px; font-size: 14px; line-height: 1.95; }
+  /* The gutter is gone at this width; the photographs would have to shrink to stamps. */
+  .step-ladder__photo { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-ladder::before { transition: none; scale: 1 1; }
+}

@@ -1,7 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { IBM_Plex_Sans_Arabic, Tajawal } from "next/font/google";
+import SiteHeader from "./components/SiteHeader";
+import SiteFooter from "./components/SiteFooter";
+import RevealObserver from "./components/RevealObserver";
 import "./globals.css";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "منصة قيادات",
+  alternateName: "المنصة الوطنية للقيادات النسائية العمانية",
+  description: "منصة وطنية تفاعلية وقاعدة بيانات للقيادات النسائية العمانية في القطاعين العام والخاص ومؤسسات المجتمع المدني.",
+  email: "albadi.abdul@outlook.com",
+  areaServed: { "@type": "Country", name: "سلطنة عمان" },
+};
 
 const display = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
@@ -55,7 +68,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ar" dir="rtl" className={`${display.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+        <RevealObserver />
+      </body>
     </html>
   );
 }

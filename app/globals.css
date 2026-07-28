@@ -39,6 +39,8 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* The header is sticky, so an unadjusted #hash lands the section's heading underneath it. */
+section[id] { scroll-margin-top: 96px; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); }
 body, button, input { letter-spacing: 0; }
 a { color: inherit; text-decoration: none; }
@@ -59,6 +61,8 @@ main { overflow: hidden; }
 .nav-links a { position: relative; padding: 10px 0; }
 .nav-links a:not(.nav-cta)::after { content: ""; position: absolute; right: 0; bottom: 2px; width: 0; height: 2px; background: var(--gold); transition: width .25s ease; }
 .nav-links a:hover::after, .nav-links a:focus-visible::after { width: 100%; }
+.nav-links a[aria-current="page"] { color: var(--navy-950); }
+.nav-links a[aria-current="page"]:not(.nav-cta)::after { width: 100%; }
 .nav-links .nav-cta { padding: 9px 17px; color: var(--navy-950); background: var(--gold); border-radius: 4px; }
 .official-logos { display: flex; align-items: center; gap: 12px; direction: ltr; }
 .official-logos img:first-child { width: 76px; height: 42px; object-fit: contain; }
@@ -153,10 +157,13 @@ h1, h2, h3 { font-family: var(--font-display); }
 .photo-band > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
 .photo-band::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(244,246,250,.9) 0%, rgba(255,255,255,.95) 55%, rgba(244,246,250,.93) 100%); }
 
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; max-width: 1140px; margin: 56px auto 0; text-align: center; }
-.stat-grid article { padding: 34px 18px; color: white; background: var(--grad-royal); border-radius: 6px; }
-.stat-grid b { display: block; color: var(--gold); font: 700 clamp(30px, 3vw, 42px)/1 var(--font-display); }
-.stat-grid span { display: block; margin-top: 16px; color: rgba(255,255,255,.78); font-size: 13px; line-height: 1.8; }
+/* ---------- Route heroes ---------- */
+/* /about and /join open on a photo-backed band rather than a bare heading: the client
+   asked for more of their own photography and less empty page above the fold. */
+.page-hero { padding: clamp(92px, 12vw, 158px) clamp(22px, 7vw, 110px) clamp(60px, 8vw, 96px); }
+.page-hero h1 { max-width: 20ch; margin: 0; color: white; font-size: clamp(31px, 5vw, 62px); line-height: 1.3; font-weight: 600; text-wrap: balance; }
+.page-hero > p { max-width: 68ch; margin: 26px 0 0; color: rgba(255,255,255,.82); font-size: clamp(15px, 1.4vw, 18px); line-height: 2.1; }
+.page-hero__cta { margin-top: 36px; }
 
 /* ---------- National library ---------- */
 .library-intro { display: flex; justify-content: center; margin-bottom: 22px; }
@@ -180,7 +187,8 @@ h1, h2, h3 { font-family: var(--font-display); }
 .photo-section .library-card h3 { color: white; }
 .photo-section .library-card p { color: rgba(255,255,255,.74); }
 .photo-section .library-note { color: rgba(255,255,255,.8); background: rgba(255,255,255,.06); }
-.library-note { max-width: 720px; margin: 34px auto 0; padding: 18px 24px; color: var(--muted); background: var(--mist); border-right: 3px solid var(--gold); border-radius: 6px; font-size: 14px; line-height: 1.9; text-align: center; }
+/* Centred text with a 3px bar down one edge never cohered; the plate carries it alone. */
+.library-note { max-width: 720px; margin: 34px auto 0; padding: 18px 24px; color: var(--muted); background: var(--mist); border-radius: 6px; font-size: 14px; line-height: 1.9; text-align: center; }
 .button-navy { color: white; background: var(--navy-950); }
 .button-navy:hover { background: var(--navy-800); transform: translateY(-2px); }
 
@@ -269,11 +277,43 @@ h1, h2, h3 { font-family: var(--font-display); }
 .persona-card-icon svg { width: 22px; height: 22px; }
 .persona-card p { margin: 0; font-size: 14px; line-height: 1.85; }
 
-.supporter-grid { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 1180px; margin: 58px auto 0; border-top: 1px solid var(--line); border-right: 1px solid var(--line); }
+.supporter-grid { display: grid; grid-template-columns: repeat(3, 1fr); max-width: 900px; margin: 58px auto 0; background: var(--paper); border-top: 1px solid var(--line); border-right: 1px solid var(--line); }
 .supporter-grid a { min-height: 245px; display: grid; place-items: center; align-content: center; gap: 18px; padding: 28px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; transition: background .2s; }
 .supporter-grid a:hover { background: var(--mist); }
-.supporter-grid img { width: 160px; height: 100px; object-fit: contain; }
+/* The TRIC mark ships with its own dark plate baked in; the radius makes that read as a
+   logo lockup rather than a rendering fault beside the two transparent marks. */
+.supporter-grid img { width: 160px; height: 100px; object-fit: contain; border-radius: 6px; }
 .supporter-grid span { font-size: 12px; line-height: 1.7; }
+
+/* ---------- Who the platform serves (/about) ---------- */
+/* Hairline-ruled lists, not two more grids of icon cards: thirteen entries of very
+   uneven length read better as a register than as tiles forced to a common height. */
+.audience-split { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(30px, 4vw, 62px); max-width: 1140px; margin: 56px auto 0; }
+.audience-column h3 { display: flex; align-items: baseline; gap: 12px; margin: 0 0 6px; padding-bottom: 16px; color: var(--navy-950); font-size: clamp(18px, 1.8vw, 23px); font-weight: 600; border-bottom: 1px solid var(--line); }
+/* Gold is 2.3:1 on paper — an accent rule, not a 14px numeral. */
+.audience-count { color: var(--navy-700); font-family: var(--font-display); font-size: .78em; font-weight: 600; }
+.audience-note { margin: 14px 0 0; color: var(--muted); font-size: 14px; line-height: 1.9; }
+.audience-column ul { margin: 4px 0 0; padding: 0; list-style: none; }
+.audience-column li { display: flex; align-items: flex-start; gap: 14px; padding: 17px 0; color: var(--ink); font-size: 15px; line-height: 1.85; border-bottom: 1px solid color-mix(in oklab, var(--line) 55%, transparent); }
+.audience-column li:last-child { border-bottom: 0; }
+.audience-icon { flex-shrink: 0; display: grid; place-items: center; width: 34px; height: 34px; margin-top: 1px; color: var(--navy-800); background: var(--mist); border-radius: 9px; }
+.audience-icon svg { width: 18px; height: 18px; }
+
+/* ---------- Leadership profile panel (/join) ---------- */
+.profile-panel { display: grid; grid-template-columns: minmax(0, 1fr) clamp(200px, 26vw, 320px); gap: clamp(24px, 3vw, 46px); align-items: center; }
+.profile-panel__items { margin: 0; padding: 0; list-style: none; }
+.profile-panel__items li { display: flex; align-items: baseline; gap: 16px; padding: 18px 0; color: var(--navy-950); font-family: var(--font-display); font-size: clamp(15px, 1.5vw, 19px); font-weight: 500; line-height: 1.7; border-bottom: 1px solid color-mix(in oklab, var(--line) 60%, transparent); }
+.profile-panel__items li:last-child { border-bottom: 0; }
+/* --gold reads 2.3:1 on paper — fine as a rule, not as 13px text. */
+.profile-panel__index { color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+.profile-panel__photo { margin: 0; overflow: hidden; border-radius: 12px; }
+.profile-panel__photo img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
+
+/* ---------- Standalone bands ---------- */
+.newsletter-section { padding-block: 0 clamp(72px, 9vw, 118px); }
+.newsletter-section .newsletter { max-width: 1140px; margin: 0 auto; }
+.join-contact__action { display: flex; justify-content: center; margin-top: 38px; }
+.join-contact .section-heading > p:last-child { color: rgba(255,255,255,.78); }
 
 .footer { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 35px; padding: 55px clamp(22px, 7vw, 110px) 30px; color: white; background: var(--navy-950); border-top: 2px solid transparent; border-image: var(--grad-hairline) 1; }
 .footer-brand { display: flex; align-items: center; gap: 16px; }
@@ -302,8 +342,10 @@ h1, h2, h3 { font-family: var(--font-display); }
   .nav-links .nav-cta { margin-top: 5px; text-align: center; }
   .menu-button { display: block; order: -1; }
   .leader-story { grid-template-columns: .8fr 1.2fr; }
-  .supporter-grid { grid-template-columns: repeat(2, 1fr); }
-  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .supporter-grid { grid-template-columns: repeat(2, 1fr); max-width: 620px; }
+  .audience-split { grid-template-columns: 1fr; }
+  .profile-panel { grid-template-columns: 1fr; }
+  .profile-panel__photo { display: none; }
   .library-grid { grid-template-columns: repeat(2, 1fr); }
   .photo-strip { grid-template-columns: repeat(2, 1fr); }
   .mission-photo img { min-height: 360px; }
@@ -336,7 +378,10 @@ h1, h2, h3 { font-family: var(--font-display); }
   .mission-photo img { min-height: 0; aspect-ratio: 4 / 3; }
   .mission-grid { gap: 18px; }
   .mission-grid article { padding: 28px 22px; }
-  .stat-grid { grid-template-columns: 1fr 1fr; margin-top: 38px; }
+  .page-hero > p { margin-top: 18px; font-size: 15px; line-height: 1.95; }
+  .audience-split { gap: 34px; margin-top: 38px; }
+  .audience-column li { font-size: 14px; padding: 15px 0; }
+  .newsletter-section .newsletter { margin-top: 0; }
   .library-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 38px; }
   .library-card { padding: 24px 20px; }
   .library-mark { width: 62px; height: 62px; }
@@ -385,7 +430,7 @@ h1, h2, h3 { font-family: var(--font-display); }
   .newsletter-control { flex-direction: column; gap: 8px; }
   .newsletter input, .newsletter button { width: 100%; border-radius: 4px; }
   .newsletter button { min-height: 48px; }
-  .stat-grid { grid-template-columns: 1fr; }
+  .supporter-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-height: 720px) and (max-width: 760px) {

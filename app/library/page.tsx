@@ -25,6 +25,7 @@ export default function LibraryPage() {
         </Link>
       </section>
 
+
       <section className="section">
         <div className="library-grid" style={{ marginTop: 0 }}>
           {libraryCategories.map((category) => (
@@ -40,21 +41,6 @@ export default function LibraryPage() {
           المستفيدة. للاستفسار أو المساهمة بمصدر معرفي، يرجى التواصل مع إدارة المنصة.
         </p>
       </section>
-
-      <footer className="footer">
-        <div className="footer-brand">
-          <span className="brand-mark">ق</span>
-          <div>
-            <strong>منصة قيادات</strong>
-            <p>المنصة الوطنية للقيادات النسائية العمانية</p>
-          </div>
-        </div>
-        <div className="footer-contact">
-          <span>للتواصل</span>
-          <a href="mailto:albadi.abdul@outlook.com">albadi.abdul@outlook.com</a>
-        </div>
-        <p className="copyright">© {new Date().getFullYear()} منصة قيادات</p>
-      </footer>
     </main>
   );
 }

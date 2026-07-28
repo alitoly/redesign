@@ -1,0 +1,156 @@
+/* A horizontal accordion of the platform's five values. The blue ramp runs deepest at
+   the start of the reading order (rightmost in RTL) and opens up toward the end, so the
+   row reads as one descending scale rather than five arbitrary swatches. */
+.value-deck {
+  --value-1: #071B3B;
+  --value-2: #0C2650;
+  --value-3: #143266;
+  --value-4: #1E4488;
+  --value-5: #2C5AA6;
+
+  display: flex;
+  gap: 10px;
+  max-width: 1240px;
+  min-height: 430px;
+  margin: 56px auto 0;
+}
+
+.value-deck__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 clamp(132px, 13vw, 186px);
+  overflow: hidden;
+  background: var(--panel-tint);
+  border-radius: 14px;
+  transition: flex-basis .46s cubic-bezier(.22, .61, .36, 1), flex-grow .46s cubic-bezier(.22, .61, .36, 1), background .3s ease;
+}
+
+.value-deck__panel[data-open="true"] {
+  flex: 1 1 clamp(340px, 34vw, 520px);
+  background: var(--paper);
+  box-shadow: 0 22px 48px -24px rgba(7, 27, 59, .38);
+}
+
+/* The gold rule reads as the panel's own edge, not a decorative accent bar. */
+.value-deck__panel[data-open="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--gold);
+}
+
+/* The heading has to stretch, or the button inside it cannot fill the slab and the icon
+   floats under the title instead of anchoring the panel's foot. */
+.value-deck__heading { display: flex; flex: 1 1 auto; margin: 0; }
+.value-deck__panel[data-open="true"] .value-deck__heading { flex: 0 0 auto; }
+
+.value-deck__trigger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 30px 24px;
+  text-align: start;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.value-deck__title {
+  color: white;
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.5vw, 20px);
+  font-weight: 600;
+  line-height: 1.65;
+  text-wrap: balance;
+  transition: color .3s ease;
+}
+
+.value-deck__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  color: var(--gold-soft);
+  background: rgba(255, 255, 255, .12);
+  border-radius: 12px;
+  transition: color .3s ease, background .3s ease;
+}
+.value-deck__icon svg { width: 22px; height: 22px; }
+
+/* Open panel: the header stops filling the slab and becomes the card's title block. */
+.value-deck__panel[data-open="true"] .value-deck__trigger {
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 22px;
+  height: auto;
+  padding: clamp(30px, 3vw, 42px) clamp(26px, 3vw, 40px) 0;
+  cursor: default;
+}
+.value-deck__panel[data-open="true"] .value-deck__title {
+  color: var(--navy-950);
+  font-size: clamp(21px, 2.1vw, 28px);
+}
+.value-deck__panel[data-open="true"] .value-deck__icon {
+  color: var(--navy-900);
+  background: var(--mist);
+}
+
+.value-deck__body { display: none; }
+.value-deck__panel[data-open="true"] .value-deck__body {
+  display: block;
+  padding: 20px clamp(26px, 3vw, 40px) clamp(30px, 3vw, 42px);
+  animation: value-body-in .5s .1s cubic-bezier(.22, .61, .36, 1) both;
+}
+.value-deck__body p {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(14px, 1.15vw, 16px);
+  line-height: 2.1;
+}
+
+@keyframes value-body-in {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: none; }
+}
+
+/* Collapsed slabs lift slightly under the pointer so the row reads as touchable. */
+.value-deck__panel[data-open="false"]:hover { background: color-mix(in oklab, var(--panel-tint) 88%, white); }
+.value-deck__trigger:focus-visible { outline: 2px solid var(--gold); outline-offset: -5px; }
+
+/* Below the desk, five side-by-side slabs stop being legible: stack into a vertical
+   accordion where the header is a full-width bar and the body drops beneath it. */
+@media (max-width: 1050px) {
+  .value-deck { flex-direction: column; gap: 8px; min-height: 0; margin-top: 40px; }
+  .value-deck__panel,
+  .value-deck__panel[data-open="true"] { flex: 0 0 auto; }
+  .value-deck__trigger {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    min-height: 76px;
+    padding: 16px 20px;
+  }
+  .value-deck__panel[data-open="true"] .value-deck__trigger {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 20px 4px;
+  }
+  .value-deck__icon { flex-shrink: 0; width: 40px; height: 40px; }
+  .value-deck__icon svg { width: 20px; height: 20px; }
+  .value-deck__panel[data-open="true"] .value-deck__title { font-size: 19px; }
+  .value-deck__panel[data-open="true"] .value-deck__body { padding: 14px 20px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .value-deck__panel { transition: none; }
+  .value-deck__panel[data-open="true"] .value-deck__body { animation: none; }
+}
