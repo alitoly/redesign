@@ -6,6 +6,53 @@ export const values = [
   { title: "المسؤولية الوطنية والاستدامة", body: "نسهم في دعم أولويات التنمية الوطنية، وبناء قيادات نسائية مستدامة، وتعزيز مشاركة المرأة في تحقيق مستهدفات رؤية عمان 2040.", icon: "sprout" },
 ];
 
+/** The three objectives and the vision/mission pair, merged into one pinned deck. The
+ *  objectives ship as the client wrote them; `title` is a short label added on top so a
+ *  full-height card has a headline — the sentence itself is untouched in `body`.
+ *  `photo` is a slug under public/images/opt, resolved through frames() in photos.ts. */
+export const purposeCards = [
+  {
+    kicker: "أهداف المنصة",
+    title: "الوصول السريع",
+    body: "تسهيل الوصول السريع إلى القيادات النسائية الوطنية للقطاع العام ومؤسسات القطاع الخاص ومؤسسات المجتمع المدني",
+    icon: "search",
+    photo: "0q8a3211",
+    alt: "اجتماع رسمي في قاعة مجلس تحضره قيادات نسائية عمانية",
+  },
+  {
+    kicker: "أهداف المنصة",
+    title: "جودة التمثيل الوطني",
+    body: "رفع جودة اختيار المرأة العمانية لتمثيل سلطنة عمان في الوفود المحلية والخارجية والمحافل الرسمية",
+    icon: "diplomacy",
+    photo: "0q8a4920",
+    alt: "قيادية عمانية تلقي كلمة من على المنصة أمام الحضور",
+  },
+  {
+    kicker: "أهداف المنصة",
+    title: "توثيق النجاحات",
+    body: "تسجيل نجاحات القيادات النسائية في ظل الرؤية العمانية 2040",
+    icon: "award",
+    photo: "0q8a3336",
+    alt: "قيادات نسائية عمانية مجتمعات حول طاولة اجتماع وطنية",
+  },
+  {
+    kicker: "هويتنا",
+    title: "رؤية قيادات",
+    body: "أن تكون منصة قيادات المرجع الوطني الأول للقيادات النسائية العمانية، والمحرك الرئيس لتعزيز حضور المرأة في مواقع القيادة وصناعة القرار، وربط الكفاءات الوطنية بفرص التمثيل والتأثير على المستويات المحلية والإقليمية والدولية.",
+    icon: "vision",
+    photo: "0q8a4992",
+    alt: "قيادية عمانية تتحدث خلال جلسة حوارية",
+  },
+  {
+    kicker: "هويتنا",
+    title: "رسالة قيادات",
+    body: "تأهيل وتمكين القيادات النسائية العمانية عبر برامج تدريبية متخصصة، وتوثيق الكفاءات الوطنية، وربطها بفرص القيادة والتمثيل والشراكات، بما يعزز حضور المرأة العمانية وإسهامها في التنمية المستدامة محليًا ودوليًا.",
+    icon: "graduation",
+    photo: "0q8a3243",
+    alt: "مدرِّبة تقدم عرضًا تدريبيًا أمام مجموعة من المشاركات",
+  },
+];
+
 /** `lead` is set at display size with U+0640 tatweel stretching its joins — the Arabic
  *  way to widen a word. `plain` is the same word unstretched: tatweel defeats both the
  *  screen reader and find-in-page, so every stretched word ships a clean twin. */

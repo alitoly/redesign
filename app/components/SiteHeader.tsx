@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element -- the national emblems ship as hand-sized AVIFs */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -22,8 +22,35 @@ export default function SiteHeader() {
   // section, not at a destination, so marking it would light two items on /about.
   const isCurrent = (href: string) => !href.includes("#") && pathname === href;
 
+  /* The read-position rule under the header. Written straight to the root as a custom
+     property rather than held in state — this fires on every scroll frame and re-rendering
+     the header that often would be the one expensive thing on the page. rAF-throttled,
+     same shape as the scrubbed road on /about. */
+  useEffect(() => {
+    let frame = 0;
+
+    const draw = () => {
+      frame = 0;
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+      document.documentElement.style.setProperty("--scroll-progress", `${Math.min(1, Math.max(0, progress))}`);
+    };
+
+    const onScroll = () => { frame ||= requestAnimationFrame(draw); };
+
+    draw();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
+
   return (
     <header className="site-header">
+      <span className="site-header__progress" aria-hidden="true" />
       <Link className="brand" href="/" aria-label="منصة قيادات - الصفحة الرئيسية" onClick={() => setMenuOpen(false)}>
         <span className="brand-mark">ق</span>
         <span><strong>قيادات</strong><small>المنصة الوطنية</small></span>

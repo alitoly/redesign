@@ -17,6 +17,13 @@
   --muted: #5A6880;
   --line: rgba(7, 27, 59, .14);
 
+  /* Height of the sticky header. Anything that pins below it — the value deck — offsets
+     by this, so it has to track .site-header's min-height at every breakpoint. */
+  --header-h: 82px;
+  /* 0…1, written every scroll frame by SiteHeader. Declared here so the rule that reads
+     it has a value during SSR and before the first frame lands. */
+  --scroll-progress: 0;
+
   /* Sector tones. Chroma is held near-constant and lightness is tuned per hue band
      so all six read at the same visual weight (yellows need more L than blues to
      match). Varying hue alone is what keeps 23 sectors looking like one system
@@ -47,12 +54,18 @@ a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 img { display: block; max-width: 100%; }
-main { overflow: hidden; }
+/* `clip`, not `hidden`. Both contain the same horizontal overflow, but `hidden` makes
+   main a scroll container, and `position: sticky` inside a container that never scrolls
+   never unsticks — it would silently kill the pinned value deck. */
+main { overflow-x: clip; overflow-y: visible; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 .site-header { position: sticky; top: 0; z-index: 50; min-height: 82px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 30px; padding: 12px clamp(22px, 5vw, 78px); background: rgba(255, 255, 255, .94); border-bottom: 1px solid var(--line); backdrop-filter: blur(16px); }
-.site-header::after { content: ""; position: absolute; inset: auto 0 -1px; height: 2px; background: var(--grad-hairline); opacity: .85; }
+/* The header's bottom edge is a two-part rule: a dim full-width track, and the gold fill
+   over it that reports how far down the page you are. RTL, so it grows from the right. */
+.site-header::after { content: ""; position: absolute; inset: auto 0 -1px; height: 2px; background: var(--grad-hairline); opacity: .26; }
+.site-header__progress { position: absolute; inset: auto 0 -1px; z-index: 1; height: 2px; background: linear-gradient(to left, var(--gold-soft), var(--gold)); transform: scaleX(var(--scroll-progress)); transform-origin: right; }
 .brand { display: inline-flex; align-items: center; gap: 12px; min-width: max-content; }
 .brand-mark { width: 46px; height: 46px; display: grid; place-items: center; color: var(--gold-soft); background: var(--navy-950); border-radius: 50% 50% 50% 12%; font-family: var(--font-display); font-size: 23px; font-weight: 700; }
 .brand strong { display: block; color: var(--navy-950); font-family: var(--font-display); font-size: 20px; line-height: 1.2; }
@@ -109,11 +122,15 @@ h1, h2, h3 { font-family: var(--font-display); }
 .section-sage { background: var(--mist); }
 .section-dark { color: white; background: var(--navy-950); }
 
-.objectives { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 65px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.objectives article { min-height: 245px; padding: 36px clamp(20px, 3vw, 46px); border-left: 1px solid var(--line); }
-.objectives article:last-child { border-left: 0; }
-.objectives span { color: var(--gold); font: 600 30px/1 var(--font-display); }
-.objectives p { margin: 30px 0 0; line-height: 2; }
+/* The value deck runs to the page edges — its own --frame gutter is the margin — so the
+   band drops the horizontal and bottom padding and the heading carries its own. */
+/* The purpose deck runs to the page edges — its own --frame gutter is the margin — so
+   the band drops the horizontal and bottom padding and the heading carries its own.
+   section.purpose, not .purpose: the phone override of .section further down the sheet
+   ties on specificity and would otherwise win the padding back. */
+section.purpose { padding-inline: 0; padding-bottom: 0; }
+.purpose > .section-heading { max-width: 980px; padding-inline: clamp(22px, 7vw, 110px); }
+
 
 .newsletter { display: grid; grid-template-columns: 1fr minmax(360px, 540px); align-items: center; gap: 40px; margin-top: 52px; padding: 32px 38px; color: white; background: var(--grad-royal); border-radius: 6px; }
 .newsletter strong { display: block; font: 600 22px/1.5 var(--font-display); }
@@ -135,13 +152,6 @@ h1, h2, h3 { font-family: var(--font-display); }
 .chip__icon { flex-shrink: 0; display: grid; place-items: center; width: 26px; height: 26px; color: var(--tone); }
 .chip__icon svg { width: 21px; height: 21px; }
 
-.mission-layout { display: grid; grid-template-columns: minmax(260px, .78fr) 1.22fr; gap: 30px; max-width: 1140px; margin: 58px auto 0; }
-.mission-photo { position: relative; margin: 0; overflow: hidden; border-radius: 10px; }
-.mission-photo img { width: 100%; height: 100%; min-height: 430px; object-fit: cover; object-position: center 28%; }
-.mission-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
-.mission-grid article { padding: 38px; background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: 6px; }
-.mission-grid h3 { margin: 0 0 18px; color: var(--navy-950); font-size: 21px; }
-.mission-grid p { margin: 0; color: var(--muted); line-height: 2; }
 
 .prose { max-width: 900px; margin-top: 36px; color: var(--muted); font-size: 17px; line-height: 2.15; }
 
@@ -334,6 +344,7 @@ h1, h2, h3 { font-family: var(--font-display); }
 @keyframes story-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 @media (max-width: 1050px) {
+  :root { --header-h: 74px; }
   .site-header { grid-template-columns: auto 1fr auto; min-height: 74px; }
   .official-logos { justify-self: end; }
   .nav-links { position: absolute; top: 100%; right: 18px; left: 18px; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 14px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 20px 50px rgba(7,27,59,.14); }
@@ -348,10 +359,10 @@ h1, h2, h3 { font-family: var(--font-display); }
   .profile-panel__photo { display: none; }
   .library-grid { grid-template-columns: repeat(2, 1fr); }
   .photo-strip { grid-template-columns: repeat(2, 1fr); }
-  .mission-photo img { min-height: 360px; }
 }
 
 @media (max-width: 760px) {
+  :root { --header-h: 70px; }
   .site-header { min-height: 70px; padding: 9px 16px; gap: 8px; }
   .brand-mark { width: 40px; height: 40px; font-size: 20px; }
   .brand strong { font-size: 17px; }
@@ -368,16 +379,8 @@ h1, h2, h3 { font-family: var(--font-display); }
   .hero-index { display: none; }
   .section { padding: 72px 20px; }
   .section-heading h2, .fields-heading h2, .leaders-top h2 { font-size: 28px; line-height: 1.6; }
-  .objectives { grid-template-columns: 1fr; margin-top: 40px; }
-  .objectives article { min-height: 0; padding: 30px 4px; border-left: 0; border-bottom: 1px solid var(--line); }
-  .objectives article:last-child { border-bottom: 0; }
-  .objectives p { margin-top: 18px; }
   .newsletter { grid-template-columns: 1fr; gap: 22px; margin-top: 38px; padding: 28px 20px; }
   .newsletter-control { width: 100%; }
-  .mission-layout { grid-template-columns: 1fr; gap: 18px; margin-top: 38px; }
-  .mission-photo img { min-height: 0; aspect-ratio: 4 / 3; }
-  .mission-grid { gap: 18px; }
-  .mission-grid article { padding: 28px 22px; }
   .page-hero > p { margin-top: 18px; font-size: 15px; line-height: 1.95; }
   .audience-split { gap: 34px; margin-top: 38px; }
   .audience-column li { font-size: 14px; padding: 15px 0; }

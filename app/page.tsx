@@ -6,10 +6,11 @@ import HeroReel from "./components/HeroReel";
 import LeaderCarousel from "./components/LeaderCarousel";
 import NewsletterForm from "./components/NewsletterForm";
 import ValueDeck from "./components/ValueDeck";
+import PurposeStack from "./components/PurposeStack";
 import StatLedger from "./components/StatLedger";
 import Icon from "./components/Icon";
 import { frames } from "./content/photos";
-import { platformStats, supporters, values } from "./content/home";
+import { platformStats, purposeCards, supporters, values } from "./content/home";
 import { libraryCategories } from "./library/categories";
 
 export default function Home() {
@@ -34,41 +35,19 @@ export default function Home() {
         <div className="hero-index" aria-hidden="true"><b>2040</b><span>نحو حضور وطني مؤثر</span></div>
       </section>
 
-      <section className="intro section" id="about">
+      {/* The three objectives and the vision/mission pair were two consecutive bands
+          saying one thing. They run together here as a single pinned deck. */}
+      <section className="purpose section" id="about">
         <div className="section-heading" data-reveal>
           <p className="eyebrow">منصة قيادات</p>
           <h2>نمكّن القيادات النسائية العُمانية من الوصول إلى فرص التأثير وصناعة القرار محليًا وإقليميًا ودوليًا</h2>
         </div>
-        <div className="objectives" data-reveal>
-          <article><span>01</span><p>تسهيل الوصول السريع إلى القيادات النسائية الوطنية للقطاع العام ومؤسسات القطاع الخاص ومؤسسات المجتمع المدني</p></article>
-          <article><span>02</span><p>رفع جودة اختيار المرأة العمانية لتمثيل سلطنة عمان في الوفود المحلية والخارجية والمحافل الرسمية</p></article>
-          <article><span>03</span><p>تسجيل نجاحات القيادات النسائية في ظل الرؤية العمانية 2040</p></article>
-        </div>
+        <PurposeStack
+          items={purposeCards.map((card) => ({ ...card, icon: <Icon name={card.icon} /> }))}
+        />
       </section>
 
-      <section className="mission section" id="mission">
-        <div className="section-heading centered" data-reveal>
-          <p className="eyebrow">هويتنا</p>
-          <h2>رؤية ورسالة قيادات</h2>
-        </div>
-        <div className="mission-layout">
-          <figure className="mission-photo" data-reveal>
-            <img {...frames("0q8a4992")} sizes="(max-width: 900px) 100vw, 38vw" alt="قيادية عمانية تتحدث خلال جلسة حوارية" loading="lazy" />
-          </figure>
-          <div className="mission-grid">
-            <article data-reveal>
-              <h3>رؤية قيادات</h3>
-              <p>أن تكون منصة قيادات المرجع الوطني الأول للقيادات النسائية العمانية، والمحرك الرئيس لتعزيز حضور المرأة في مواقع القيادة وصناعة القرار، وربط الكفاءات الوطنية بفرص التمثيل والتأثير على المستويات المحلية والإقليمية والدولية.</p>
-            </article>
-            <article data-reveal>
-              <h3>رسالة قيادات</h3>
-              <p>تأهيل وتمكين القيادات النسائية العمانية عبر برامج تدريبية متخصصة، وتوثيق الكفاءات الوطنية، وربطها بفرص القيادة والتمثيل والشراكات، بما يعزز حضور المرأة العمانية وإسهامها في التنمية المستدامة محليًا ودوليًا.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="values section section-sage">
+      <section className="values section section-sage" id="values">
         <div className="section-heading centered" data-reveal>
           <p className="eyebrow">ما نؤمن به</p>
           <h2>قيم قيادات</h2>
