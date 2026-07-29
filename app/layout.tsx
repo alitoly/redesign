@@ -61,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [{ url: "/og.png", width: 1536, height: 910, alt: "منصة قيادات - المنصة الوطنية للقيادات النسائية العمانية" }],
     },
     twitter: { card: "summary_large_image", title: "منصة قيادات", description: "المنصة الوطنية للقيادات النسائية العمانية", images: ["/og.png"] },
-    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    icons: { icon: "/logo.png", shortcut: "/logo.png", apple: "/logo.png" },
   };
 }
 

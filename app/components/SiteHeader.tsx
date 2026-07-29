@@ -52,7 +52,7 @@ export default function SiteHeader() {
     <header className="site-header">
       <span className="site-header__progress" aria-hidden="true" />
       <Link className="brand" href="/" aria-label="منصة قيادات - الصفحة الرئيسية" onClick={() => setMenuOpen(false)}>
-        <span className="brand-mark">ق</span>
+        <img className="brand-mark" src="/logo.png" alt="" width={46} height={46} />
         <span><strong>قيادات</strong><small>المنصة الوطنية</small></span>
       </Link>
       <nav className={menuOpen ? "nav-links is-open" : "nav-links"} aria-label="التنقل الرئيسي">
